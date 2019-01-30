@@ -1,6 +1,7 @@
 from __future__ import print_function
 import requests
 import random
+import pyttsx
 
 artists_to_songs =	{
   "David Bowie": "Heroes",
@@ -28,18 +29,25 @@ def extract_lyrics_lines(lyrics_list):
         all_lyrics_list = all_lyrics_list + [line for line in lyrics.split('\n') if line]
     return all_lyrics_list
 
-def randomly_print_lyrics(lyrics):
+def get_random_lyrics(lyrics):
+    string = ''
     for i in range(20):
-        index = random.randint(1,len(lyrics))
-        print(lyrics[index])
-        if i % 5 == 0:
-            print('\n', end='')
+        index = random.randint(1,len(lyrics)-1)
+        string = string + lyrics[index]
+    return string
+
+def sing(song):
+    engine = pyttsx.init()
+    engine.say(song)
+    engine.runAndWait()
 
 def main():
     lyrics_list = get_lyrics()
     all_lyrics_lines = extract_lyrics_lines(lyrics_list)
     random.shuffle(all_lyrics_lines)
-    randomly_print_lyrics(all_lyrics_lines)
+    lyrics_string = get_random_lyrics(all_lyrics_lines)
+    print(lyrics_string)
+    # sing(lyrics_string)
 
 
 if __name__== "__main__":
